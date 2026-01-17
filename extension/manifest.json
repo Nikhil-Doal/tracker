@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Browser Telemetry (Local)",
+  "version": "0.1.0",
+  "description": "Local browser event capture for personal telemetry",
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+  "permissions": ["tabs", "windows", "idle", "storage"]
+}
