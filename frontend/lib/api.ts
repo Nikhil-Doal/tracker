@@ -2,6 +2,7 @@ import axios from 'axios';
 import type {
   AuthResponse,
   User,
+  Event,
   EventsResponse,
   DashboardData,
   TimeSpentData,
@@ -84,12 +85,12 @@ export const eventsAPI = {
     return data;
   },
 
-  getRecent: async (hours = 24): Promise<{ events: any[]; count: number }> => {
+  getRecent: async (hours = 24): Promise<{ events: Event[]; count: number }> => {
     const { data } = await api.get(`/events/recent?hours=${hours}`);
     return data;
   },
 
-  getTopDomains: async (limit = 10): Promise<{ domains: any[] }> => {
+  getTopDomains: async (limit = 10): Promise<{ domains: Array<{ domain: string; count: number; lastVisit?: string }> }> => {
     const { data } = await api.get(`/events/domains?limit=${limit}`);
     return data;
   },
@@ -112,7 +113,14 @@ export const analyticsAPI = {
     return data;
   },
 
-  getPatterns: async (days = 30): Promise<any> => {
+  getPatterns: async (days = 30): Promise<{
+    most_active_hour: number | null;
+    most_active_day: string | null;
+    patterns: {
+      peak_hour: { _id: number; count: number } | null;
+      peak_day: { _id: number; count: number } | null;
+    };
+  }> => {
     const { data } = await api.get(`/analytics/patterns?days=${days}`);
     return data;
   },

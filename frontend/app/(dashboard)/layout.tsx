@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
@@ -9,10 +10,12 @@ import { Navbar } from '@/components/dashboard/Navbar';
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const router = useRouter();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated());
+
+  // IMPORTANT: read value, not function
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     if (!isAuthenticated) {

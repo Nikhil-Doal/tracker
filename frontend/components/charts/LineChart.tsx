@@ -3,7 +3,7 @@
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface LineChartProps {
-  data: Array<any>;
+  data: Array<Record<string, string | number>>;
   lines: Array<{
     dataKey: string;
     stroke: string;

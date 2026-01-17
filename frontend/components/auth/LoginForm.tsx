@@ -26,8 +26,11 @@ export function LoginForm() {
       await login(email, password);
       router.push('/');
       router.refresh();
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+    } catch (err) {
+      const errorMessage = err instanceof Error && 'response' in err 
+        ? (err as { response?: { data?: { error?: string } } }).response?.data?.error 
+        : 'Login failed. Please try again.';
+      setError(errorMessage || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -40,8 +40,11 @@ export function RegisterForm() {
       await register(email, name, password);
       router.push('/');
       router.refresh();
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
+    } catch (err) {
+      const errorMessage = err instanceof Error && 'response' in err 
+        ? (err as { response?: { data?: { error?: string } } }).response?.data?.error 
+        : 'Registration failed. Please try again.';
+      setError(errorMessage || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
