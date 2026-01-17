@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Extension Test Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #667eea;
+      }
+      .test-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 14px;
+      }
+      .test-btn:hover {
+        background: #5568d3;
+      }
+      .status {
+        background: #f0f0f0;
+        padding: 15px;
+        border-radius: 6px;
+        margin: 10px 0;
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .success {
+        color: #10b981;
+      }
+      .error {
+        color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧪 Extension Test Page</h1>
+
+    <div class="card">
+      <h2>Quick Tests</h2>
+      <p>Use these buttons to generate test events:</p>
+      <button class="test-btn" onclick="openNewTab()">Open New Tab</button>
+      <button class="test-btn" onclick="navigateAway()">
+        Navigate to Random Site
+      </button>
+      <button class="test-btn" onclick="openMultipleTabs()">Open 5 Tabs</button>
+      <button class="test-btn" onclick="checkExtension()">
+        Check Extension Status
+      </button>
+    </div>
+
+    <div class="card">
+      <h2>Extension Status</h2>
+      <div class="status" id="status">
+        Click "Check Extension Status" to verify installation
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Expected Events</h2>
+      <ul>
+        <li><strong>TAB_CREATED:</strong> When you open a new tab</li>
+        <li><strong>TAB_ACTIVATED:</strong> When you switch to this tab</li>
+        <li>
+          <strong>TAB_UPDATED:</strong> When you navigate to a different URL
+        </li>
+        <li><strong>TAB_REMOVED:</strong> When you close a tab</li>
+        <li><strong>WINDOW_FOCUS_CHANGED:</strong> When you switch windows</li>
+        <li>
+          <strong>IDLE_STATE_CHANGED:</strong> When you go idle (60s default)
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>How to Verify</h2>
+      <ol>
+        <li>Open <code>chrome://extensions/</code></li>
+        <li>Find "Browser Telemetry Tracker"</li>
+        <li>Click "service worker" link</li>
+        <li>Watch console for <code>[Telemetry Event]</code> logs</li>
+        <li>Click the extension icon to see stats</li>
+      </ol>
+    </div>
+
+    <script>
+      function openNewTab() {
+        window.open("https://example.com", "_blank");
+        updateStatus(
+          "Opened new tab - should generate TAB_CREATED event",
+          "success",
+        );
+      }
+
+      function navigateAway() {
+        const sites = [
+          "https://github.com",
+          "https://stackoverflow.com",
+          "https://developer.mozilla.org",
+          "https://news.ycombinator.com",
+        ];
+        const randomSite = sites[Math.floor(Math.random() * sites.length)];
+        window.location.href = randomSite;
+      }
+
+      function openMultipleTabs() {
+        const sites = [
+          "https://example.com",
+          "https://github.com",
+          "https://stackoverflow.com",
+          "https://developer.mozilla.org",
+          "https://news.ycombinator.com",
+        ];
+
+        sites.forEach((site, index) => {
+          setTimeout(() => {
+            window.open(site, "_blank");
+          }, index * 200);
+        });
+
+        updateStatus(
+          "Opening 5 tabs - should generate 5 TAB_CREATED events",
+          "success",
+        );
+      }
+
+      function checkExtension() {
+        updateStatus("Checking extension...", "");
+
+        // Check if extension APIs are available
+        if (typeof chrome !== "undefined" && chrome.runtime) {
+          updateStatus(
+            "✅ Extension environment detected!<br>Check service worker console for event logs.",
+            "success",
+          );
+        } else {
+          updateStatus(
+            "❌ Extension APIs not detected. Make sure extension is loaded.",
+            "error",
+          );
+        }
+      }
+
+      function updateStatus(message, type) {
+        const status = document.getElementById("status");
+        status.innerHTML = message;
+        status.className = "status " + type;
+      }
+
+      // Auto-check on page load
+      setTimeout(checkExtension, 500);
+    </script>
+  </body>
+</html>

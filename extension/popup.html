@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser Telemetry Tracker</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>⏱️ Time Tracker</h1>
+      </header>
+
+      <div id="auth-section">
+        <div id="logged-out" class="auth-state">
+          <p class="info-text">Please log in to sync your data</p>
+          <button id="login-btn" class="btn btn-primary">
+            Login to Dashboard
+          </button>
+        </div>
+
+        <div id="logged-in" class="auth-state" style="display: none">
+          <div class="user-info">
+            <span class="status-dot status-active"></span>
+            <span id="user-email">Logged in</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-section">
+        <h2>📊 Stats</h2>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="event-count">-</div>
+            <div class="stat-label">Events Stored</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="pending-count">-</div>
+            <div class="stat-label">Pending Sync</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sync-section">
+        <h2>🔄 Sync</h2>
+        <div class="sync-info">
+          <div class="sync-status">
+            <span class="status-dot" id="sync-status-dot"></span>
+            <span id="sync-status-text">Not synced yet</span>
+          </div>
+          <div class="last-sync" id="last-sync">-</div>
+        </div>
+        <button id="sync-btn" class="btn btn-primary" disabled>Sync Now</button>
+      </div>
+
+      <div class="actions-section">
+        <button id="view-dashboard-btn" class="btn btn-secondary">
+          View Dashboard
+        </button>
+        <button id="clear-data-btn" class="btn btn-danger">
+          Clear Local Data
+        </button>
+      </div>
+
+      <footer>
+        <p class="version">v1.0.0</p>
+      </footer>
+    </div>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>
